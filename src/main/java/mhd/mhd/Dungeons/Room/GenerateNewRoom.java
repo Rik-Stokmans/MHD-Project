@@ -14,25 +14,26 @@ import java.time.format.DateTimeFormatter;
 public class GenerateNewRoom implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        boolean useRandomSeed = false;
-        if (args.length == 0) {
-            useRandomSeed = true;
-        }
-        if (sender instanceof Player) {
-            Player player = (Player) sender;
+        if (args.length != 4) return false;
 
-            String seed;
-            if (useRandomSeed) {
+        if (sender instanceof Player) {
+
+            int width = Integer.parseInt(args[0]);
+            int height = Integer.parseInt(args[1]);
+            String seed = args[2];
+            Bukkit.broadcastMessage(String.valueOf(seed.length()));
+            int randomInfillPercent = Integer.parseInt(args[3]);
+
+            if (seed.equals("RANDOM")) {
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd HH:mm:ss:nnn");
                 LocalDateTime now = LocalDateTime.now();
                 seed = dtf.format(now);
-            } else {
-                seed = args[0];
+
             }
 
             clearMap();
 
-            RoomGenerator rg = new RoomGenerator(100, 100, seed, 35, 1000);
+            RoomGenerator rg = new RoomGenerator(width, height, seed, randomInfillPercent, (width*height/10));
             RoomPlacer rp = new RoomPlacer(rg.map, new Location(Bukkit.getWorld("flat60"), 1, 80, 1), seed);
 
             return true;

@@ -7,3 +7,4 @@ description: dungeon server
 commands:
   GenerateNewRoom:
     permission: op
+    usage: /generatenewroom <width> <height> <seed (RANDOM)> <density>
