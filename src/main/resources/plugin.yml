@@ -1,0 +1,9 @@
+name: MHD
+version: '${project.version}'
+main: mhd.mhd.MHD
+api-version: 1.18
+authors: [ duffie13 ]
+description: dungeon server
+commands:
+  GenerateNewRoom:
+    permission: op
