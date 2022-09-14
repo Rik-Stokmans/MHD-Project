@@ -34,7 +34,7 @@ public class GenerateNewRoom implements CommandExecutor {
             clearMap();
 
             RoomGenerator rg = new RoomGenerator(width, height, seed, randomInfillPercent, (width*height/10));
-            RoomPlacer rp = new RoomPlacer(rg.map, new Location(Bukkit.getWorld("flat60"), 1, 80, 1), seed);
+            RoomPlacer rp = new RoomPlacer(rg.map, new Location(Bukkit.getWorld("world"), 1, 80, 1), seed);
 
             return true;
         } else {

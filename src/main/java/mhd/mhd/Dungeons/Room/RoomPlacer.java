@@ -46,7 +46,7 @@ public class RoomPlacer {
         Location bottomRight = spawnLocation.clone().add(x * 5, 0, y * 5);
 
         if (square.configuration >= 0 && square.configuration <= 14) {
-            File structure = new File(Bukkit.getWorld("flat60").getWorldFolder() + "/generated/minecraft/structures/" + square.configuration + ".nbt");
+            File structure = new File(Bukkit.getWorld("world").getWorldFolder() + "/generated/minecraft/structures/" + square.configuration + ".nbt");
             //tries to load the structure
             try {
                 MHD.structureManager.loadStructure(structure).place(bottomRight, false, StructureRotation.CLOCKWISE_90, Mirror.NONE, 0, 1, new Random());

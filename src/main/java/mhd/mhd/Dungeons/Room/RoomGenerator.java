@@ -23,7 +23,6 @@ public class RoomGenerator {
     private List<Room> survivingRooms;
 
     public RoomGenerator(int _width, int _height, String _seed, int _randomFillPercent, int _minimumEmptyTiles) {
-        final long startTime = System.nanoTime();//TEMP
         width = _width;
         height = _height;
         seed = _seed;
@@ -31,30 +30,15 @@ public class RoomGenerator {
         if (_minimumEmptyTiles < width * height * 0.15) minimumEmptyTiles = _minimumEmptyTiles;
         map = new int[width][height];
 
-        //makes sure we get a map that is approved
-        boolean gotGoodMap = false;
-        while(!gotGoodMap) {
-            GenerateMap();
-            gotGoodMap = IsValidMap();
-        }
-
-        //sorts all the rooms from big to small afterwards connects them up
-        survivingRooms.sort(Room::compareTo);
-        survivingRooms.get(0).isMainRoom = true;
-        survivingRooms.get(0).isAccessibleFromMainRoom = true;
-        ConnectClosestRooms (survivingRooms, false);
+        //generates a valid map
+        GenerateMap();
 
         //sets the seed that has been used for the generation, this way it can be used for generating the tileset
-        usedSeed = seed.hashCode() * seedingIterations;
-        final long endTime = System.nanoTime();//TEMP
-
-        Bukkit.broadcastMessage("Total execution time: " + (endTime - startTime) + seedingIterations);//TEMP
-
+        usedSeed = seed.hashCode() + seedingIterations;
     }
 
     boolean IsValidMap() {
         if (GetEmptyTileAmount() >= minimumEmptyTiles && GetEmptyTileAmount() <= minimumEmptyTiles * 1.3) {
-            Bukkit.broadcastMessage(String.valueOf(seedingIterations));//TEMP
             return true;
         }
         else {
@@ -78,6 +62,16 @@ public class RoomGenerator {
             else {
                 survivingRooms.add(new Room(region, map));
             }
+        }
+
+        if (IsValidMap()) {
+            survivingRooms.sort(Room::compareTo);
+            survivingRooms.get(0).isMainRoom = true;
+            survivingRooms.get(0).isAccessibleFromMainRoom = true;
+            ConnectClosestRooms (survivingRooms, false);
+        }
+        else {
+            GenerateMap();
         }
     }
 
@@ -164,20 +158,6 @@ public class RoomGenerator {
         }
     }
 
-    /*void DrawCircle(Coord c, int r) {
-        for (int x = -r;x <= r; x++) {
-            for (int y = -r;y <= r; y++) {
-                if (x*x + y*y <= r*r) {
-                    int drawX = c.tileX + x;
-                    int drawY = c.tileY + y;
-                    if (IsInMapRange(drawX, drawY)) {
-                        map[drawX][drawY] = 0;
-                    }
-                }
-            }
-        }
-    }*/
-
     List<Coord> GetLine(Coord from, Coord to) {
         List<Coord> line = new ArrayList<>();
 
@@ -242,7 +222,6 @@ public class RoomGenerator {
                 }
             }
         }
-
         return regions;
     }
 
@@ -270,7 +249,6 @@ public class RoomGenerator {
                 }
             }
         }
-
         return tiles;
     }
 
