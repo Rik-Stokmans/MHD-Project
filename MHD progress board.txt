@@ -1,0 +1,16 @@
+MHD progress board
+
+Generation:
+ - generate a basic map width cellulair automata
+
+ - save all rooms in a list
+
+ - generate start and end points
+
+ - spawn in all the walls
+
+ - generate a custom map for every room with custom buildings, loot, puzzles etc.
+
+ - spawn in the custom rooms
+
+ - populate rooms with mobs
