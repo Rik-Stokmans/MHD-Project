@@ -49,7 +49,7 @@ public class RoomPlacer {
             File structure = new File(Bukkit.getWorld("world").getWorldFolder() + "/generated/minecraft/structures/" + square.configuration + ".nbt");
             //tries to load the structure
             try {
-                MHD.structureManager.loadStructure(structure).place(bottomRight, false, StructureRotation.CLOCKWISE_90, Mirror.NONE, 0, 1, new Random());
+                MHD.structureManager.loadStructure(structure).place(bottomRight, false, StructureRotation.NONE, Mirror.NONE, 0, 1, new Random());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

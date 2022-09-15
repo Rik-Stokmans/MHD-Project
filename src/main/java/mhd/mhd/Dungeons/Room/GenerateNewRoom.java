@@ -18,8 +18,8 @@ public class GenerateNewRoom implements CommandExecutor {
 
         if (sender instanceof Player) {
 
-            int width = Integer.parseInt(args[0]);
-            int height = Integer.parseInt(args[1]);
+            int height = Integer.parseInt(args[0]);
+            int width = Integer.parseInt(args[1]);
             String seed = args[2];
             Bukkit.broadcastMessage(String.valueOf(seed.length()));
             int randomInfillPercent = Integer.parseInt(args[3]);
