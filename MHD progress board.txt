@@ -1,7 +1,7 @@
 MHD progress board
 
 Generation:
- - generate a basic map width cellulair automata
+ - generate a basic map width cellular automata
 
  - save all rooms in a list
 
