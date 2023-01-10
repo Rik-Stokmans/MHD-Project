@@ -5,6 +5,8 @@ import org.bukkit.Bukkit;
 import java.util.*;
 import java.util.List;
 
+import static mhd.mhd.Utils.ChatUtils.format;
+
 public class RoomGenerator {
 
     public int width;
@@ -69,6 +71,7 @@ public class RoomGenerator {
             survivingRooms.get(0).isMainRoom = true;
             survivingRooms.get(0).isAccessibleFromMainRoom = true;
             ConnectClosestRooms (survivingRooms, false);
+            Bukkit.broadcastMessage(String.valueOf(seedingIterations) + format(" &7[&aSucces&7]"));
         }
         else {
             GenerateMap();
@@ -372,8 +375,6 @@ public class RoomGenerator {
                 }
             }
         }
-
-
 
         public void setAccessibleFromMainRoom() {
              if (!isAccessibleFromMainRoom) {

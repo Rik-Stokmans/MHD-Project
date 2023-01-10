@@ -9,7 +9,7 @@ Generation:
 
  - spawn in all the walls
 
- - generate a custom map for every room with custom buildings, loot, puzzles etc.
+ - generate a custom map for every room with custom buildings, loot, puzzles, light sources etc.
 
  - spawn in the custom rooms
 

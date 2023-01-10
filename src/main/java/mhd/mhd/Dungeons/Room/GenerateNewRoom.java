@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static mhd.mhd.Utils.ChatUtils.format;
+
 public class GenerateNewRoom implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -21,8 +23,12 @@ public class GenerateNewRoom implements CommandExecutor {
             int height = Integer.parseInt(args[0]);
             int width = Integer.parseInt(args[1]);
             String seed = args[2];
-            Bukkit.broadcastMessage(String.valueOf(seed.length()));
+            //Bukkit.broadcastMessage(String.valueOf(seed.length()));
             int randomInfillPercent = Integer.parseInt(args[3]);
+            if (randomInfillPercent < 30 || randomInfillPercent > 40) {
+                randomInfillPercent = 35;
+                Bukkit.broadcastMessage(format("&cInfill Percentage should be between 30 and 40, defaulted to 35"));
+            }
 
             if (seed.equals("RANDOM")) {
                 DateTimeFormatter dtf = DateTimeFormatter.ofPattern("MM/dd HH:mm:ss:nnn");
@@ -31,20 +37,13 @@ public class GenerateNewRoom implements CommandExecutor {
 
             }
 
-            clearMap();
-
             RoomGenerator rg = new RoomGenerator(width, height, seed, randomInfillPercent, (width*height/10));
             RoomPlacer rp = new RoomPlacer(rg.map, new Location(Bukkit.getWorld("world"), 1, 80, 1), seed);
+            RoomDecorator rd = new RoomDecorator(rg.map, width, height);
 
             return true;
         } else {
             return false;
         }
-    }
-
-    void clearMap() {
-        ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
-        String command = "fill 0 80 0 150 80 150 air";
-        Bukkit.dispatchCommand(console, command);
     }
 }
