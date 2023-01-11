@@ -8,9 +8,13 @@ public class RoomDecorator {
     public int width,height;
     public int tileMapWidth,tileMapHeight;
     public int[][] tilemap;
+    int[][] tileMapCopy;
+
+    int mediumRoomThreshold = 6;
+    int largeRoomThreshold = 15;
 
     public int[][] regionMap;
-    int[][] tileMapCopy;
+    int regionCount;
 
     public RoomDecorator(int[][] _map, int _width, int _height) {
         map = _map;
@@ -25,6 +29,70 @@ public class RoomDecorator {
         separateRegions();
 
         broadcastTileMap();
+
+        processAllRooms();
+
+        //generate an enlarged version for each room
+
+        //decide what structures will be placed in each room
+
+        //fill the room with the structures
+
+        //place the structures
+
+    }
+
+    private void processAllRooms() {
+        for (int regionNumber = 1; regionNumber <= regionCount; regionNumber++) {
+            int[][] roomLayoutWithUnused = new int[tileMapWidth][tileMapHeight];
+            int roomSize = 0;
+
+
+            for (int i = 0; i < tileMapWidth; i++) {
+                for (int j = 0; j < tileMapHeight; j++) {
+                    if (regionMap[i][j] == regionNumber) {
+                        roomLayoutWithUnused[i][j] = 0;
+                        roomSize++;
+                    } else {
+                        roomLayoutWithUnused[i][j] = 1;
+                    }
+                }
+            }
+
+            int[][] roomLayout =  removeUnusedRowsAndCols(roomLayoutWithUnused);
+
+            int[][] enlargedRoomLayout = enlargeRoom(roomLayout, 5);
+
+            //small room
+            if (roomSize < mediumRoomThreshold) {
+
+            }
+            //medium room
+            else  if (roomSize < largeRoomThreshold) {
+
+            }
+            //large room
+            else {
+
+            }
+
+
+        }
+    }
+
+    private int[][] enlargeRoom(int[][] roomLayout, int factor) {
+        int k = 1;
+        for(int i = 0; i < roomLayout.length; i++)
+            for(int j = 0; j < roomLayout[0].length; j++)
+                roomLayout[i][j] = k++;
+
+        int[][] newArray = new int[roomLayout.length*factor][roomLayout[0].length*factor];
+
+        for(int i = 0; i < newArray.length; i++)
+            for(int j = 0; j < newArray[0].length; j++)
+                newArray[i][j] = roomLayout[i/factor][j/factor];
+
+        return newArray;
     }
 
     int regionNumber = 1;
@@ -45,6 +113,7 @@ public class RoomDecorator {
                 }
             }
         }
+        regionCount = regionNumber - 1;
     }
 
     private void checkSurroundingTiles(int x, int y) {
@@ -93,5 +162,55 @@ public class RoomDecorator {
 
     boolean isInMapRange(int x, int y) {
         return x >= 0 && x < tileMapWidth && y >= 0 && y < tileMapHeight;
+    }
+
+    int[][] removeUnusedRowsAndCols(int[][] arr) {
+        int rows = arr.length;
+        int cols = arr[0].length;
+
+        boolean[] rowHasOne = new boolean[rows];
+        boolean[] colHasOne = new boolean[cols];
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (arr[i][j] == 1) {
+                    rowHasOne[i] = true;
+                    colHasOne[j] = true;
+                }
+            }
+        }
+
+        int newRows = 0;
+        for (int i = 0; i < rows; i++) {
+            if (rowHasOne[i]) {
+                newRows++;
+            }
+        }
+
+        int newCols = 0;
+        for (int j = 0; j < cols; j++) {
+            if (colHasOne[j]) {
+                newCols++;
+            }
+        }
+
+        int[][] newArr = new int[newRows][newCols];
+        int newRowIndex = 0;
+        for (int i = 0; i < rows; i++) {
+            if (!rowHasOne[i]) {
+                continue;
+            }
+            int newColIndex = 0;
+            for (int j = 0; j < cols; j++) {
+                if (!colHasOne[j]) {
+                    continue;
+                }
+                newArr[newRowIndex][newColIndex] = arr[i][j];
+                newColIndex++;
+            }
+            newRowIndex++;
+        }
+
+        return newArr;
     }
 }

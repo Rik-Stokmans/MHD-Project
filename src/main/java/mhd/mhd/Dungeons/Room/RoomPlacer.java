@@ -16,11 +16,15 @@ public class RoomPlacer {
     public Location spawnLocation;
     SquareGrid tileGrid;
 
+    Random seededRand;
+
     public RoomPlacer(int[][] _map, Location _location, String seed) {
         map = _map;
         spawnLocation = _location;
 
         tileGrid = new SquareGrid(map);
+
+        seededRand = new Random(seed.hashCode());
 
         buildMap();
     }
@@ -53,8 +57,6 @@ public class RoomPlacer {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        } else {
-
         }
     }
 
