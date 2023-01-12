@@ -28,7 +28,6 @@ public class GenerateNewRoom implements CommandExecutor {
             int width = Integer.parseInt(args[1]);
             if (width < 15) {
                 Bukkit.broadcastMessage(format("&cWidth must be 15 or more, defaulted to 15"));
-                width = 15;
             }
             String seed = args[2];
             //Bukkit.broadcastMessage(String.valueOf(seed.length()));
@@ -47,7 +46,9 @@ public class GenerateNewRoom implements CommandExecutor {
 
             RoomGenerator rg = new RoomGenerator(width, height, seed, randomInfillPercent, (width*height/8));
             RoomPlacer rp = new RoomPlacer(rg.map, new Location(Bukkit.getWorld("world"), 1, 80, 1), seed);
-            RoomDecorator rd = new RoomDecorator(rg.map, width, height);
+            try {
+                RoomDecorator rd = new RoomDecorator(rg.map, width, height, seed, new Location(Bukkit.getWorld("world"), 1, 80, 1), "sandstone");
+            } catch (CloneNotSupportedException e) {throw new RuntimeException(e);}
             return true;
         } else {
             return false;

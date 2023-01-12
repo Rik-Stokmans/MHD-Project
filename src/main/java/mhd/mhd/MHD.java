@@ -1,5 +1,6 @@
 package mhd.mhd;
 
+import mhd.mhd.Dungeons.Room.DungeonInfo;
 import mhd.mhd.Dungeons.Room.GenerateNewRoom;
 import mhd.mhd.Loot.LootCrate;
 import org.bukkit.event.Listener;
@@ -29,6 +30,7 @@ public final class MHD extends JavaPlugin {
         }
 
         LootCrate.initLootTables();
+        DungeonInfo.initDungeonInfo();
     }
 
     @Override

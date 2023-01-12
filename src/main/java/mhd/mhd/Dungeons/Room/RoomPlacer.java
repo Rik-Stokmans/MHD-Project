@@ -49,7 +49,7 @@ public class RoomPlacer {
     void buildSquare(Square square, int x, int y) {
         Location bottomRight = spawnLocation.clone().add(x * 5, 0, y * 5);
 
-        if (square.configuration >= 0 && square.configuration <= 14) {
+        if (square.configuration > 0 && square.configuration <= 14) {
             File structure = new File(Bukkit.getWorld("world").getWorldFolder() + "/generated/minecraft/structures/" + square.configuration + ".nbt");
             //tries to load the structure
             try {

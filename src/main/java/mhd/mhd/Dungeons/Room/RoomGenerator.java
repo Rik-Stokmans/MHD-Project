@@ -79,7 +79,7 @@ public class RoomGenerator {
         }
         int x = spawnRoomTileX;
         int y = spawnRoomTileY;
-        Bukkit.broadcastMessage(String.valueOf((map[x][y+2] + map[x-1][y+1] + map[x][y+1] + map[x+1][y+1] + map[x-2][y] + map[x-1][y] + map[x+1][y] + map[x+2][y] + map[x-1][y-1] + map[x][y-1] + map[x+1][y-1] + map[x][y-2])));
+        //Bukkit.broadcastMessage(String.valueOf((map[x][y+2] + map[x-1][y+1] + map[x][y+1] + map[x+1][y+1] + map[x-2][y] + map[x-1][y] + map[x+1][y] + map[x+2][y] + map[x-1][y-1] + map[x][y-1] + map[x+1][y-1] + map[x][y-2])));
         return region;
     }
 
