@@ -22,6 +22,8 @@ public class RoomGenerator {
 
     public int usedSeed;
 
+    public int spawnRoomTileX, spawnRoomTileY;
+
     private List<Room> survivingRooms;
 
     public RoomGenerator(int _width, int _height, String _seed, int _randomFillPercent, int _minimumEmptyTiles) {
@@ -40,13 +42,45 @@ public class RoomGenerator {
     }
 
     boolean IsValidMap() {
-        if (GetEmptyTileAmount() >= minimumEmptyTiles && GetEmptyTileAmount() <= minimumEmptyTiles * 1.3) {
+        if (GetEmptyTileAmount() >= minimumEmptyTiles && GetEmptyTileAmount() <= minimumEmptyTiles * 1.6) {
             return true;
         }
         else {
             seedingIterations++;
             return false;
         }
+    }
+
+    private List<Coord> generateSpawnRoom() {
+        List<Coord> region = new ArrayList<>();
+        boolean foundSpawnLoc = false;
+        for (int x = 2; x < width - 3; x ++) {
+            for (int y = 2; y < height - 3; y++) {
+                if (map[x][y] == 1 && !foundSpawnLoc) {
+                    if ((map[x][y+2] + map[x-1][y+1] + map[x][y+1] + map[x+1][y+1] + map[x-2][y] + map[x-1][y] + map[x+1][y] + map[x+2][y] + map[x-1][y-1] + map[x][y-1] + map[x+1][y-1] + map[x][y-2]) == 12) {
+                        map[x][y+1] = 0;
+                        map[x-1][y] = 0;
+                        map[x][y] = 0;
+                        map[x+1][y] = 0;
+                        map[x][y-1] = 0;
+                        spawnRoomTileX = x;
+                        spawnRoomTileY = y;
+
+                        region.add(new Coord(x,y+1));
+                        region.add(new Coord(x-1,y));
+                        region.add(new Coord(x,y));
+                        region.add(new Coord(x+1,y));
+                        region.add(new Coord(x,y-1));
+
+                        foundSpawnLoc = true;
+                    }
+                }
+            }
+        }
+        int x = spawnRoomTileX;
+        int y = spawnRoomTileY;
+        Bukkit.broadcastMessage(String.valueOf((map[x][y+2] + map[x-1][y+1] + map[x][y+1] + map[x+1][y+1] + map[x-2][y] + map[x-1][y] + map[x+1][y] + map[x+2][y] + map[x-1][y-1] + map[x][y-1] + map[x+1][y-1] + map[x][y-2])));
+        return region;
     }
 
     void ProcessMap() {
@@ -67,6 +101,7 @@ public class RoomGenerator {
         }
 
         if (IsValidMap()) {
+            survivingRooms.add(new Room(generateSpawnRoom(), map));
             survivingRooms.sort(Room::compareTo);
             survivingRooms.get(0).isMainRoom = true;
             survivingRooms.get(0).isAccessibleFromMainRoom = true;

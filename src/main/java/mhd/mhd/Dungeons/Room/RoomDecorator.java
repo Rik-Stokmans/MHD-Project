@@ -43,6 +43,10 @@ public class RoomDecorator {
     }
 
     private void processAllRooms() {
+        int smallRoomCount = 0;
+        int mediumRoomCount = 0;
+        int largeRoomCount = 0;
+
         for (int regionNumber = 1; regionNumber <= regionCount; regionNumber++) {
             int[][] roomLayoutWithUnused = new int[tileMapWidth][tileMapHeight];
             int roomSize = 0;
@@ -65,19 +69,18 @@ public class RoomDecorator {
 
             //small room
             if (roomSize < mediumRoomThreshold) {
-
+                smallRoomCount++;
             }
             //medium room
             else  if (roomSize < largeRoomThreshold) {
-
+                mediumRoomCount++;
             }
             //large room
             else {
-
+                largeRoomCount++;
             }
-
-
         }
+        Bukkit.broadcastMessage("small: " + smallRoomCount + ", medium: " + mediumRoomCount + ", large: " + largeRoomCount);
     }
 
     private int[][] enlargeRoom(int[][] roomLayout, int factor) {

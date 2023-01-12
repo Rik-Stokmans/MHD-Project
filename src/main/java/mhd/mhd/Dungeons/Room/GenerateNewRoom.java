@@ -21,7 +21,15 @@ public class GenerateNewRoom implements CommandExecutor {
         if (sender instanceof Player) {
 
             int height = Integer.parseInt(args[0]);
+            if (height < 15) {
+                Bukkit.broadcastMessage(format("&cHeight must be 15 or more, defaulted to 15"));
+                height = 15;
+            }
             int width = Integer.parseInt(args[1]);
+            if (width < 15) {
+                Bukkit.broadcastMessage(format("&cWidth must be 15 or more, defaulted to 15"));
+                width = 15;
+            }
             String seed = args[2];
             //Bukkit.broadcastMessage(String.valueOf(seed.length()));
             int randomInfillPercent = Integer.parseInt(args[3]);
@@ -37,10 +45,9 @@ public class GenerateNewRoom implements CommandExecutor {
 
             }
 
-            RoomGenerator rg = new RoomGenerator(width, height, seed, randomInfillPercent, (width*height/10));
+            RoomGenerator rg = new RoomGenerator(width, height, seed, randomInfillPercent, (width*height/8));
             RoomPlacer rp = new RoomPlacer(rg.map, new Location(Bukkit.getWorld("world"), 1, 80, 1), seed);
             RoomDecorator rd = new RoomDecorator(rg.map, width, height);
-
             return true;
         } else {
             return false;
